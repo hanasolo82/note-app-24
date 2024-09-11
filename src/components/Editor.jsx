@@ -3,9 +3,9 @@ import ReactMde from "react-mde";
 import Showdown from "showdown";
 import "react-mde/lib/styles/css/react-mde-all.css";
 
-export default function Editor() {
-    const [value, setValue] = useState("**Hello world!!!**");
-    const [selectedTab, setSelectedTab] = useState ();
+export default function Editor({ currentNote, updateNote }) {
+    
+    const [selectedTab, setSelectedTab] = useState ("write");
 
     const converter = new Showdown.Converter({
         simplifyAutoLink: true,
@@ -16,19 +16,21 @@ export default function Editor() {
         simpleLineBreaks: true,
         openLinksInNewWindow: true,
         emoji: true, 
-        underline: true /*experimental */
+        underline: true, /*experimental */
 
     })
     return (
         <section  className='pane editor'>
             <ReactMde 
-                value={value}
-                onChange={setValue}
+                value={currentNote.body}
+                onChange={updateNote}
                 selectedTab={selectedTab}
                 onTabChange={setSelectedTab}
-                generateMarkdownPreview={markdown =>
+                generateMarkdownPreview={(markdown) =>
                   Promise.resolve(converter.makeHtml(markdown))
                 }
+                minEditorHeight={80}
+                heightUnits="vh"
             />
 
         </section>
